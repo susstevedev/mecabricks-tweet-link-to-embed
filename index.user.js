@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Mecabricks - Tweet link to embed
 // @namespace    http://tampermonkey.net/
-// @version      2025-11-05
-// @description  Replaces twitter.com links with embeds on Mecabricks
+// @version      2025-11-08
+// @description  Replaces twitter.com links with embeds on Mecabricks. Also tries to fix the embed on the homepage
 // @author       susstevedev
 // @match        https://*.mecabricks.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
@@ -28,7 +28,7 @@
         });
     } else {
         const twtwrapper = document.querySelector('#superglobal #twitter-wrapper #twitter-timeline');
-        document.querySelector('#twitter-title').innerText = "@Mecabricks on X";
-        twtwrapper.innerHTML = `<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/Mecabricks?ref_src=twsrc%5Etfw">Posts by Mecabricks</a>`;
+        twtwrapper.innerHTML = `<a class="twitter-timeline" href="https://twitter.com/Mecabricks?ref_src=twsrc%5Etfw">Tweets by Mecabricks</a>`;
+        const renderedtl = document.querySelector("#superglobal #twitter-wrapper #twitter-timeline .twitter-timeline.twitter-timeline-rendered");
     }
 })();
