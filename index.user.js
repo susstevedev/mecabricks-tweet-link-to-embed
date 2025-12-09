@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Mecabricks - Tweet link to embed
 // @namespace    http://tampermonkey.net/
-// @version      2025-11-08
-// @description  Replaces twitter.com links with embeds on Mecabricks. Also tries to fix the embed on the homepage
+// @version      2025-12-09
+// @description  Replaces twitter.com links with embeds on Mecabricks. Also tries to fix the embed on the homepage.
 // @author       susstevedev
 // @match        https://*.mecabricks.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
@@ -22,6 +22,11 @@
             console.log(p);
 
             p.querySelectorAll('a[href*="twitter.com"]').forEach(a => {
+                const url = a.href;
+                a.outerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+            });
+
+            p.querySelectorAll('a[href*="x.com"]').forEach(a => {
                 const url = a.href;
                 a.outerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
             });
