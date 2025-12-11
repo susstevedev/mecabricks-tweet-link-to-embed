@@ -13,14 +13,8 @@
 (function() {
     'use strict';
 
-    const WINDOW_URL = window.location.href
-    if(WINDOW_URL.includes('forum')) {
-        const posts = document.querySelectorAll('.post .message-wrapper > .text');
-        console.log(posts);
-
-        posts.forEach(p => {
-            console.log(p);
-
+    function parse_links(p) {
+        if(!p.querySelector('blockquote[class*="twitter-tweet"]')) {
             p.querySelectorAll('a[href*="twitter.com"]').forEach(a => {
                 const url = a.href;
                 a.outerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
@@ -30,10 +24,41 @@
                 const url = a.href;
                 a.outerHTML = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
             });
-        });
-    } else {
-        const twtwrapper = document.querySelector('#superglobal #twitter-wrapper #twitter-timeline');
-        twtwrapper.innerHTML = `<a class="twitter-timeline" href="https://twitter.com/Mecabricks?ref_src=twsrc%5Etfw">Tweets by Mecabricks</a>`;
-        const renderedtl = document.querySelector("#superglobal #twitter-wrapper #twitter-timeline .twitter-timeline.twitter-timeline-rendered");
+        }
     }
+
+    const WINDOW_URL = window.location.href
+
+    //const observer = new MutationObserver(function(mutationsList, observer) {
+        if(WINDOW_URL.includes('forum')) {
+            const posts = document.querySelectorAll('.post .message-wrapper > .text');
+            console.log(posts);
+
+            posts.forEach(p => {
+                console.log(p);
+                parse_links(p);
+            });
+        } else if(WINDOW_URL.includes('messages')) {
+            const messages = document.querySelectorAll('#conversation-messages .item .content');
+            console.log(messages);
+
+            messages.forEach(p => {
+                console.log(p);
+                parse_links(p);
+
+                const messageUsernames = document.querySelector('#conversations-list');
+                messageUsernames.addEventListener('click', parse_links(p));
+            });
+        } else {
+            const twtwrapper = document.querySelector('#superglobal #twitter-wrapper #twitter-timeline');
+            twtwrapper.innerHTML = `<a class="twitter-timeline" href="https://twitter.com/Mecabricks?ref_src=twsrc%5Etfw">Tweets by Mecabricks</a>`;
+            const renderedtl = document.querySelector("#superglobal #twitter-wrapper #twitter-timeline .twitter-timeline.twitter-timeline-rendered");
+        }
+    //});
+
+    //observer.observe(document.body, { childList: true, subtree: true });
+
+    /*setTimeout(() => {
+        observer.observe(document.body, { childList: true, subtree: true });
+    }, 1000);*/
 })();
